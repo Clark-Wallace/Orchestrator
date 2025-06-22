@@ -1,0 +1,83 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Virtual Environments
+bin/
+include/
+lib/
+lib64/
+share/
+pyvenv.cfg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Project specific
+settings.json
+orchestrator_state.json
+server.log
+*.log
+workspace/
+completed_archive/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Test files
+test_*.txt
+*.test.py
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# API Keys and Secrets
+*_key.txt
+*_secret.txt
+credentials.json
+
+# Node (if frontend build is added later)
+node_modules/
+dist/
+build/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Package files
+*.egg-info/
+dist/
+wheels/
+
+# OS generated files
+Thumbs.db
+.Spotlight-V100
+.Trashes

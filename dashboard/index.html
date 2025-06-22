@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orchestrator - AI-Augmented Development Platform</title>
+    <link rel="stylesheet" href="styles.css?v=8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="16" cy="16" r="15" stroke="url(#gradient)" stroke-width="2"/>
+                    <path d="M16 8L20 12L16 16L12 12L16 8Z" fill="url(#gradient)"/>
+                    <path d="M16 16L20 20L16 24L12 20L16 16Z" fill="url(#gradient)" opacity="0.6"/>
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#3B82F6"/>
+                            <stop offset="100%" style="stop-color:#8B5CF6"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1>Orchestrator</h1>
+            </div>
+            <nav class="nav-tabs">
+                <button class="nav-tab active" data-tab="development">Development</button>
+                <button class="nav-tab" data-tab="monitoring">Monitoring</button>
+                <button class="nav-tab" data-tab="analytics">Analytics</button>
+                <button class="nav-tab" data-tab="settings">Settings</button>
+            </nav>
+        </div>
+        <div class="header-right">
+            <div class="project-controls">
+                <button class="btn-danger reset-project" id="reset-project" title="Reset entire project">
+                    🔄 Reset
+                </button>
+            </div>
+            <div class="project-selector">
+                <select id="project-select">
+                    <option value="current">Current Project</option>
+                    <option value="new">+ New Project</option>
+                </select>
+            </div>
+            <div class="health-indicator">
+                <span class="health-label">System Health</span>
+                <div class="health-bar">
+                    <div class="health-fill" style="width: 92%"></div>
+                </div>
+                <span class="health-value">92%</span>
+            </div>
+            <button class="icon-btn" title="Notifications">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
+                </svg>
+                <span class="notification-badge">3</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Development Tab -->
+        <div class="tab-content active" id="development-tab">
+            <!-- Command Bar -->
+            <div class="command-bar">
+                <div class="command-input-wrapper">
+                    <input type="text" class="command-input" placeholder="Describe what you want to build..." id="requirement-input">
+                    <div class="command-actions">
+                        <select class="priority-select" id="priority-select">
+                            <option value="5">Normal Priority</option>
+                            <option value="8">High Priority</option>
+                            <option value="10">Critical</option>
+                        </select>
+                        <button class="submit-btn" id="submit-requirement">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M8 1l6 7-6 7v-4H2V5h6V1z"/>
+                            </svg>
+                            Build
+                        </button>
+                    </div>
+                </div>
+                <div class="quick-actions">
+                    <button class="quick-action" data-template="api">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M2 5a2 2 0 012-2h8a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V5z"/>
+                        </svg>
+                        REST API
+                    </button>
+                    <button class="quick-action" data-template="webapp">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M3 2a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V3a1 1 0 00-1-1H3z"/>
+                        </svg>
+                        Web App
+                    </button>
+                    <button class="quick-action" data-template="cli">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M4 6l3 3-3 3M8 12h4"/>
+                        </svg>
+                        CLI Tool
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Grid -->
+            <div class="dashboard-grid">
+                <!-- Agent Status Panel -->
+                <div class="panel agents-panel">
+                    <div class="panel-header">
+                        <h2>AI Agents</h2>
+                        <button class="icon-btn small" id="agents-menu-btn" title="Agent Options">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <circle cx="8" cy="8" r="1.5"/>
+                                <circle cx="3" cy="8" r="1.5"/>
+                                <circle cx="13" cy="8" r="1.5"/>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu" id="agents-menu" style="display: none;">
+                            <button class="dropdown-item" id="refresh-agents">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+                                    <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+                                </svg>
+                                Refresh Status
+                            </button>
+                            <button class="dropdown-item" id="reset-agents">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M8 3a5 5 0 0 0-4.546 2.914.5.5 0 0 1-.908-.417A6 6 0 1 1 8 14a6 6 0 0 1-5.996-5.775.5.5 0 0 1 .998-.05A5 5 0 1 0 8 3z"/>
+                                </svg>
+                                Reset All Agents
+                            </button>
+                            <button class="dropdown-item" id="view-agent-logs">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                    <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5A.5.5 0 0 1 3 6z"/>
+                                </svg>
+                                View Agent Logs
+                            </button>
+                        </div>
+                    </div>
+                    <div class="agents-grid">
+                        <div class="agent-card" data-agent="analyst">
+                            <div class="agent-icon analyst">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                                </svg>
+                            </div>
+                            <div class="agent-info">
+                                <h3>Strategic Analyst</h3>
+                                <p class="agent-role">Architecture & Planning</p>
+                                <div class="agent-status ready">Ready</div>
+                            </div>
+                            <div class="agent-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">0</span>
+                                    <span class="metric-label">Tasks</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">100%</span>
+                                    <span class="metric-label">Success</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="agent-card" data-agent="implementer">
+                            <div class="agent-icon implementer">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+                                </svg>
+                            </div>
+                            <div class="agent-info">
+                                <h3>Code Generator</h3>
+                                <p class="agent-role">Implementation</p>
+                                <div class="agent-status ready">Ready</div>
+                            </div>
+                            <div class="agent-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">0</span>
+                                    <span class="metric-label">Tasks</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">100%</span>
+                                    <span class="metric-label">Quality</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="agent-card" data-agent="validator">
+                            <div class="agent-icon validator">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+                                </svg>
+                            </div>
+                            <div class="agent-info">
+                                <h3>Quality Validator</h3>
+                                <p class="agent-role">Testing & Security</p>
+                                <div class="agent-status ready">Ready</div>
+                            </div>
+                            <div class="agent-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">0</span>
+                                    <span class="metric-label">Tasks</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">100%</span>
+                                    <span class="metric-label">Success</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="agent-card" data-agent="integrator">
+                            <div class="agent-icon integrator">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                                </svg>
+                            </div>
+                            <div class="agent-info">
+                                <h3>Integrator</h3>
+                                <p class="agent-role">Deployment & CI/CD</p>
+                                <div class="agent-status ready">Ready</div>
+                            </div>
+                            <div class="agent-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">0</span>
+                                    <span class="metric-label">Tasks</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">100%</span>
+                                    <span class="metric-label">Uptime</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Collapsible Agent Console -->
+                <div class="console-section">
+                    <button class="console-toggle" id="console-toggle">
+                        <span class="console-icon">📟</span>
+                        <span class="console-title">Agent Console</span>
+                        <span class="console-arrow">▼</span>
+                        <span class="console-status" id="console-status">Ready</span>
+                    </button>
+                    <div class="console-panel" id="console-panel">
+                        <div class="console-header">
+                            <span class="console-prompt">orchestrator@ai-agents:~$</span>
+                            <div class="console-controls">
+                                <button class="console-btn" id="clear-console" title="Clear">🗑️</button>
+                                <button class="console-btn" id="pause-console" title="Pause">⏸️</button>
+                            </div>
+                        </div>
+                        <div class="console-output" id="console-output">
+                            <div class="console-line system">
+                                <span class="console-time">[Ready]</span>
+                                <span class="console-level">SYSTEM</span>
+                                <span class="console-message">🚀 Agent monitoring active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Pipeline -->
+                <div class="panel pipeline-panel">
+                    <div class="panel-header">
+                        <h2>Task Pipeline</h2>
+                        <div class="pipeline-filters">
+                            <button class="filter-btn active">All</button>
+                            <button class="filter-btn">Active</button>
+                            <button class="filter-btn">Pending</button>
+                        </div>
+                    </div>
+                    <div class="pipeline-stages">
+                        <div class="stage">
+                            <h3>Analysis</h3>
+                            <div class="task-list">
+                                <div class="task-card">
+                                    <div class="task-header">
+                                        <span class="task-title">System Architecture</span>
+                                        <span class="task-priority high">High</span>
+                                    </div>
+                                    <div class="task-assignee">
+                                        <img src="data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='10' fill='%234F46E5'/%3E%3C/svg%3E" alt="Analyst">
+                                        <span>Strategic Analyst</span>
+                                    </div>
+                                    <div class="task-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 75%"></div>
+                                        </div>
+                                        <span class="progress-text">75%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stage">
+                            <h3>Implementation</h3>
+                            <div class="task-list">
+                                <div class="task-card">
+                                    <div class="task-header">
+                                        <span class="task-title">API Endpoints</span>
+                                        <span class="task-priority normal">Normal</span>
+                                    </div>
+                                    <div class="task-assignee">
+                                        <img src="data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='10' fill='%2310B981'/%3E%3C/svg%3E" alt="Implementer">
+                                        <span>Code Generator</span>
+                                    </div>
+                                    <div class="task-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 45%"></div>
+                                        </div>
+                                        <span class="progress-text">45%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stage">
+                            <h3>Validation</h3>
+                            <div class="task-list">
+                                <div class="task-card pending">
+                                    <div class="task-header">
+                                        <span class="task-title">Security Audit</span>
+                                        <span class="task-priority normal">Normal</span>
+                                    </div>
+                                    <div class="task-assignee">
+                                        <img src="data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='10' fill='%23F59E0B'/%3E%3C/svg%3E" alt="Validator">
+                                        <span>Quality Validator</span>
+                                    </div>
+                                    <div class="task-status">Pending</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stage">
+                            <h3>Deployment</h3>
+                            <div class="task-list empty">
+                                <p class="empty-state">No tasks yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Decision Center -->
+                <div class="panel decision-panel">
+                    <div class="panel-header">
+                        <h2>Decision Center</h2>
+                        <span class="decision-count">2 pending</span>
+                    </div>
+                    <div class="decision-list" id="decision-list">
+                        <!-- Decisions will be populated dynamically from real AI signals -->
+                        <div class="no-decisions" id="no-decisions">
+                            <p>No pending decisions. The AI agents will present choices here when needed.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Summary -->
+                <div class="panel summary-panel">
+                    <div class="panel-header">
+                        <h2>Project Summary</h2>
+                        <button class="icon-btn small" title="Refresh" id="refresh-summary">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M8 3a5 5 0 104.546 2.914.5.5 0 01-.908-.417A4 4 0 108 7a.5.5 0 01-.547.854l-1.5 1.5a.5.5 0 01-.708-.708L6.793 7.5H8a.5.5 0 010 1z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="summary-content">
+                        <div class="summary-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="total-requirements">1</div>
+                                <div class="stat-label">Requirements</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="lines-generated">500</div>
+                                <div class="stat-label">Lines Generated</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="completion-rate">75%</div>
+                                <div class="stat-label">Completion</div>
+                            </div>
+                        </div>
+                        
+                        <div class="recent-outputs">
+                            <h3>Recent Outputs</h3>
+                            <div class="output-list" id="output-list">
+                                <div class="output-item">
+                                    <div class="output-icon">📄</div>
+                                    <div class="output-info">
+                                        <div class="output-name">server.py</div>
+                                        <div class="output-details">FastAPI application • 150 lines</div>
+                                    </div>
+                                    <button class="btn-secondary view-output" data-file="server.py">View</button>
+                                </div>
+                                <div class="output-item">
+                                    <div class="output-icon">🧪</div>
+                                    <div class="output-info">
+                                        <div class="output-name">test_api.py</div>
+                                        <div class="output-details">Unit tests • 85% coverage</div>
+                                    </div>
+                                    <button class="btn-secondary view-output" data-file="test_api.py">View</button>
+                                </div>
+                                <div class="output-item">
+                                    <div class="output-icon">📋</div>
+                                    <div class="output-info">
+                                        <div class="output-name">README.md</div>
+                                        <div class="output-details">Documentation • Setup guide</div>
+                                    </div>
+                                    <button class="btn-secondary view-output" data-file="README.md">View</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Archive Link -->
+                        <div class="archive-link-section">
+                            <button class="btn-secondary archive-link" id="open-archive">
+                                📁 Browse Archive
+                            </button>
+                        </div>
+
+                        <div class="quick-actions-summary">
+                            <button class="btn-primary export-project">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M8.5 1.5V6H12l-4 4-4-4h3.5V1.5h1zM2 10v4h12v-4H2z"/>
+                                </svg>
+                                Export Project
+                            </button>
+                            <button class="btn-secondary view-all-files">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M1.5 0A1.5 1.5 0 000 1.5v13A1.5 1.5 0 001.5 16h13a1.5 1.5 0 001.5-1.5v-13A1.5 1.5 0 0014.5 0h-13zM1 1.5a.5.5 0 01.5-.5h13a.5.5 0 01.5.5v13a.5.5 0 01-.5.5h-13a.5.5 0 01-.5-.5v-13z"/>
+                                </svg>
+                                View All Files
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoring Tab -->
+        <div class="tab-content" id="monitoring-tab">
+            <div class="dashboard-grid">
+                <!-- System Metrics -->
+                <div class="panel monitoring-panel">
+                    <div class="panel-header">
+                        <h2>System Metrics</h2>
+                        <div class="time-range">
+                            <select id="time-range-select">
+                                <option value="1h">Last Hour</option>
+                                <option value="24h" selected>Last 24 Hours</option>
+                                <option value="7d">Last 7 Days</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon">🔄</div>
+                            <div class="metric-info">
+                                <span class="metric-value" id="total-requests">247</span>
+                                <span class="metric-label">API Requests</span>
+                                <span class="metric-change positive">+12%</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">⚡</div>
+                            <div class="metric-info">
+                                <span class="metric-value" id="avg-response">142ms</span>
+                                <span class="metric-label">Avg Response</span>
+                                <span class="metric-change positive">-8%</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">💾</div>
+                            <div class="metric-info">
+                                <span class="metric-value" id="memory-usage">68%</span>
+                                <span class="metric-label">Memory Usage</span>
+                                <span class="metric-change neutral">±0%</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">🔥</div>
+                            <div class="metric-info">
+                                <span class="metric-value" id="cpu-usage">24%</span>
+                                <span class="metric-label">CPU Usage</span>
+                                <span class="metric-change positive">-5%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-time Logs -->
+                <div class="panel logs-panel">
+                    <div class="panel-header">
+                        <h2>Real-time Logs</h2>
+                        <div class="log-controls">
+                            <button class="btn-secondary" id="clear-logs">Clear</button>
+                            <button class="btn-secondary" id="pause-logs">Pause</button>
+                        </div>
+                    </div>
+                    <div class="logs-container" id="logs-container">
+                        <div class="log-entry info">
+                            <span class="log-time">14:32:15</span>
+                            <span class="log-level">INFO</span>
+                            <span class="log-message">Strategic Analyst completed architecture analysis</span>
+                        </div>
+                        <div class="log-entry success">
+                            <span class="log-time">14:31:58</span>
+                            <span class="log-level">SUCCESS</span>
+                            <span class="log-message">Code Generator finished implementation (500 lines)</span>
+                        </div>
+                        <div class="log-entry warning">
+                            <span class="log-time">14:31:42</span>
+                            <span class="log-level">WARN</span>
+                            <span class="log-message">Quality Validator found 2 minor issues</span>
+                        </div>
+                        <div class="log-entry info">
+                            <span class="log-time">14:31:20</span>
+                            <span class="log-level">INFO</span>
+                            <span class="log-message">New requirement received: "Create modern web dashboard"</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent Performance -->
+                <div class="panel performance-panel">
+                    <div class="panel-header">
+                        <h2>Agent Performance</h2>
+                    </div>
+                    <div class="performance-charts">
+                        <div class="chart-container">
+                            <h3>Task Completion Rate</h3>
+                            <div class="chart-placeholder">
+                                <div class="bar-chart">
+                                    <div class="bar" style="height: 95%"><span>Analyst 95%</span></div>
+                                    <div class="bar" style="height: 88%"><span>Implementer 88%</span></div>
+                                    <div class="bar" style="height: 92%"><span>Validator 92%</span></div>
+                                    <div class="bar" style="height: 85%"><span>Integrator 85%</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div class="tab-content" id="analytics-tab">
+            <div class="dashboard-grid">
+                <!-- Project Analytics -->
+                <div class="panel analytics-panel">
+                    <div class="panel-header">
+                        <h2>Project Analytics</h2>
+                        <div class="date-range">
+                            <input type="date" id="start-date" value="2025-06-14">
+                            <span>to</span>
+                            <input type="date" id="end-date" value="2025-06-21">
+                        </div>
+                    </div>
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <h3>Requirements Processed</h3>
+                            <div class="big-number">47</div>
+                            <div class="analytics-trend">
+                                <span class="trend-arrow up">↗</span>
+                                <span>+23% from last week</span>
+                            </div>
+                        </div>
+                        <div class="analytics-card">
+                            <h3>Code Generated</h3>
+                            <div class="big-number">12.4k</div>
+                            <div class="analytics-subtitle">lines of code</div>
+                            <div class="analytics-trend">
+                                <span class="trend-arrow up">↗</span>
+                                <span>+15% efficiency</span>
+                            </div>
+                        </div>
+                        <div class="analytics-card">
+                            <h3>Avg. Completion Time</h3>
+                            <div class="big-number">4.2h</div>
+                            <div class="analytics-subtitle">per requirement</div>
+                            <div class="analytics-trend">
+                                <span class="trend-arrow down">↘</span>
+                                <span>-18% faster</span>
+                            </div>
+                        </div>
+                        <div class="analytics-card">
+                            <h3>Quality Score</h3>
+                            <div class="big-number">94%</div>
+                            <div class="analytics-subtitle">test coverage</div>
+                            <div class="analytics-trend">
+                                <span class="trend-arrow up">↗</span>
+                                <span>+3% improvement</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technology Stack Analysis -->
+                <div class="panel tech-stack-panel">
+                    <div class="panel-header">
+                        <h2>Technology Stack Usage</h2>
+                    </div>
+                    <div class="tech-grid">
+                        <div class="tech-item">
+                            <div class="tech-icon">🐍</div>
+                            <div class="tech-name">Python</div>
+                            <div class="tech-usage">68%</div>
+                            <div class="usage-bar">
+                                <div class="usage-fill" style="width: 68%"></div>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-icon">⚛️</div>
+                            <div class="tech-name">React</div>
+                            <div class="tech-usage">45%</div>
+                            <div class="usage-bar">
+                                <div class="usage-fill" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-icon">🗄️</div>
+                            <div class="tech-name">PostgreSQL</div>
+                            <div class="tech-usage">38%</div>
+                            <div class="usage-bar">
+                                <div class="usage-fill" style="width: 38%"></div>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-icon">☁️</div>
+                            <div class="tech-name">Docker</div>
+                            <div class="tech-usage">52%</div>
+                            <div class="usage-bar">
+                                <div class="usage-fill" style="width: 52%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cost Analysis -->
+                <div class="panel cost-panel">
+                    <div class="panel-header">
+                        <h2>Cost Analysis</h2>
+                    </div>
+                    <div class="cost-breakdown">
+                        <div class="cost-item">
+                            <div class="cost-category">AI Agent Usage</div>
+                            <div class="cost-amount">$23.45</div>
+                            <div class="cost-period">this month</div>
+                        </div>
+                        <div class="cost-item">
+                            <div class="cost-category">Infrastructure</div>
+                            <div class="cost-amount">$12.80</div>
+                            <div class="cost-period">this month</div>
+                        </div>
+                        <div class="cost-item">
+                            <div class="cost-category">Storage</div>
+                            <div class="cost-amount">$3.20</div>
+                            <div class="cost-period">this month</div>
+                        </div>
+                        <div class="cost-total">
+                            <div class="cost-category">Total</div>
+                            <div class="cost-amount">$39.45</div>
+                            <div class="cost-budget">of $100 budget</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-content" id="settings-tab">
+            <div class="settings-layout">
+                <!-- Agent Configuration -->
+                <div class="panel settings-panel">
+                    <div class="panel-header">
+                        <h2>Agent Configuration</h2>
+                    </div>
+                    <div class="settings-section">
+                        <h3>AI Model Settings</h3>
+                        <div class="setting-item">
+                            <label for="claude-model">Claude Model</label>
+                            <select id="claude-model">
+                                <option value="claude-3-sonnet" selected>Claude 3 Sonnet</option>
+                                <option value="claude-3-opus">Claude 3 Opus</option>
+                                <option value="claude-3-haiku">Claude 3 Haiku</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="codex-model">Codex Model</label>
+                            <select id="codex-model">
+                                <option value="gpt-4" selected>GPT-4</option>
+                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="max-tokens">Max Tokens per Request</label>
+                            <input type="number" id="max-tokens" value="4000" min="100" max="8000">
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>API Keys</h3>
+                        <div class="setting-item">
+                            <label for="openai-key">OpenAI API Key</label>
+                            <input type="password" id="openai-key" placeholder="sk-...">
+                            <button class="btn-secondary test-key">Test</button>
+                        </div>
+                        <div class="setting-item">
+                            <label for="anthropic-key">Anthropic API Key</label>
+                            <input type="password" id="anthropic-key" placeholder="sk-ant-...">
+                            <button class="btn-secondary test-key">Test</button>
+                        </div>
+                        <div class="setting-item">
+                            <label for="deepseek-key">DeepSeek API Key</label>
+                            <input type="password" id="deepseek-key" placeholder="sk-...">
+                            <button class="btn-secondary test-key">Test</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Preferences -->
+                <div class="panel preferences-panel">
+                    <div class="panel-header">
+                        <h2>System Preferences</h2>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Notifications</h3>
+                        <div class="setting-item checkbox-item">
+                            <input type="checkbox" id="task-complete-notify" checked>
+                            <label for="task-complete-notify">Task completion notifications</label>
+                        </div>
+                        <div class="setting-item checkbox-item">
+                            <input type="checkbox" id="decision-needed-notify" checked>
+                            <label for="decision-needed-notify">Decision required notifications</label>
+                        </div>
+                        <div class="setting-item checkbox-item">
+                            <input type="checkbox" id="error-notify" checked>
+                            <label for="error-notify">Error notifications</label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Automation</h3>
+                        <div class="setting-item">
+                            <label for="auto-assign">Auto-assign tasks to agents</label>
+                            <select id="auto-assign">
+                                <option value="enabled" selected>Enabled</option>
+                                <option value="disabled">Disabled</option>
+                                <option value="prompt">Prompt for approval</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="parallel-execution">Parallel task execution</label>
+                            <select id="parallel-execution">
+                                <option value="enabled" selected>Enabled</option>
+                                <option value="disabled">Disabled</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="retry-attempts">Retry attempts on failure</label>
+                            <input type="number" id="retry-attempts" value="3" min="0" max="10">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Settings -->
+                <div class="panel project-settings-panel">
+                    <div class="panel-header">
+                        <h2>Project Settings</h2>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Default Configuration</h3>
+                        <div class="setting-item">
+                            <label for="default-priority">Default task priority</label>
+                            <select id="default-priority">
+                                <option value="5" selected>Normal (5)</option>
+                                <option value="7">High (7)</option>
+                                <option value="10">Critical (10)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="workspace-path">Workspace path</label>
+                            <input type="text" id="workspace-path" value="/Users/MAC_AI/Desktop/Projects Main/June20/TestRun/Orchestrator">
+                            <button class="btn-secondary browse-path">Browse</button>
+                        </div>
+                        <div class="setting-item">
+                            <label for="backup-interval">Auto-backup interval</label>
+                            <select id="backup-interval">
+                                <option value="15">15 minutes</option>
+                                <option value="30" selected>30 minutes</option>
+                                <option value="60">1 hour</option>
+                                <option value="disabled">Disabled</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-actions">
+                        <button class="btn-primary save-settings">Save All Settings</button>
+                        <button class="btn-secondary reset-settings">Reset to Defaults</button>
+                        <button class="btn-secondary export-config">Export Configuration</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Real-time Activity Ticker -->
+    <div class="activity-ticker">
+        <div class="ticker-content">
+            <span class="activity-item">
+                <span class="activity-time">10:32</span>
+                <span class="activity-agent">Strategic Analyst</span>
+                completed architecture design
+            </span>
+            <span class="activity-item">
+                <span class="activity-time">10:35</span>
+                <span class="activity-agent">Code Generator</span>
+                generated 120 lines of code
+            </span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
