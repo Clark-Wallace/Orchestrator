@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Draw a Plane</title>
+  <style>
+    /* Define styles for the plane */
+    #plane {
+      width: 200px;
+      height: 100px;
+      background-color: #ffffff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Define styles for the plane's body */
+    #plane .body {
+      width: 150px;
+      height: 80px;
+      background-color: #ff0000;
+      border-radius: 0 0 50px 50px;
+      position: absolute;
+      left: 25px;
+      top: 10px;
+    }
+
+    /* Define styles for the plane's wings */
+    #plane .wing {
+      width: 100px;
+      height: 20px;
+      background-color: #0000ff;
+      position: absolute;
+      top: 40px;
+    }
+
+    /* Define styles for the left wing */
+    #plane .wing.left {
+      border-radius: 50% 0 0 0;
+      left: -20px;
+      transform: rotate(-45deg);
+      transform-origin: top left;
+    }
+
+    /* Define styles for the right wing */
+    #plane .wing.right {
+      border-radius: 0 50% 0 0;
+      right: -20px;
+      transform: rotate(45deg);
+      transform-origin: top right;
+    }
+
+    /* Define styles for the plane's windows */
+    #plane .window {
+      width: 20px;
+      height: 20px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      position: absolute;
+      top: 25px;
+    }
+
+    /* Define styles for the windows on the left side */
+    #plane .window.left {
+      left: 10px;
+    }
+
+    /* Define styles for the windows on the right side */
+    #plane .window.right {
+      right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="plane">
+    <div class="body"></div>
+    <div class="wing left"></div>
+    <div class="wing right"></div>
+    <div class="window left"></div>
+    <div class="window right"></div>
+    <div class="window left" style="top: 55px;"></div>
+    <div class="window right" style="top: 55px;"></div>
+  </div>
+
+  <script>
+    // Get the plane element
+    var plane = document.getElementById("plane");
+
+    // Get the window elements
+    var windows = document.getElementsByClassName("window");
+
+    // Set the animation for the plane
+    plane.style.animation = "plane 5s linear infinite alternate";
+
+    // Set the animation for the windows
+    for (var i = 0; i < windows.length; i++) {
+      windows[i].style.animation = "window 5s linear infinite alternate";
+    }
+  </script>
+</body>
+</html>
+
+<script>
+  // Define keyframes for the plane animation
+  @keyframes plane {
+    from { transform: translate(0, 0); }
+    to { transform: translate(500px, 300px); }
+  }
+
+  // Define keyframes for the window animation
+  @keyframes window {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+</script>
