@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weather Dashboard</title>
+  <style>
+    body {
+      background-color: #fff;
+      font-family: "Helvetica Neue", sans-serif;
+    }
+    #container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    #search-form {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #search-input {
+      font-size: 16px;
+      padding: 10px;
+      width: 50%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    #search-btn {
+      font-size: 16px;
+      padding: 10px;
+      background-color: #4286f4;
+      color: #fff;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+    #search-btn:hover {
+      background-color: #3366f4;
+    }
+    #weather-info {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #weather-info .weather-item {
+      text-align: center;
+      flex: 1 0 30%;
+      margin: 10px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #weather-info .weather-item h2 {
+      margin: 0;
+    }
+    #weather-info .weather-item p {
+      margin: 10px 0;
+    }
+    #weather-info .weather-item img {
+      max-width: 100%;
+    }
+    @media screen and (max-width: 600px) {
+      #weather-info .weather-item {
+        flex: 1 0 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Weather Dashboard</h1>
+    <form id="search-form">
+      <input type="text" id="search-input" placeholder="Enter city name">
+      <button type="button" id="search-btn">Search</button>
+    </form>
+    <div id="weather-info"></div>
+  </div>
+
+  <script>
+    // Function to fetch weather data from OpenWeatherMap API
+    function getWeather(city) {
+      // API URL with city name and API key
+      let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=YOUR_API_KEY_HERE`;
+
+      // Fetch data from API
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          // Get necessary data from response
+          let cityName = data.name;
+          let temp = data.main.temp;
+          let description = data.weather[0].description;
+          let iconUrl = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+
+          // Create HTML elements and insert data
+          let weatherItem = document.createElement("div");
+          weatherItem.classList.add("weather-item");
+          weatherItem.innerHTML = `
+            <h2>${cityName}</h2>
+            <p>${temp}°C</p>
+            <p>${description}</p>
+            <img src="${iconUrl}" alt="Weather icon">
+          `;
+
+          // Add weather item to weather info div
+          document.getElementById("weather-info").appendChild(weatherItem);
+        })
+        .catch(error => console.log(error));
+    }
+
+    // Function to handle search button click
+    document.getElementById("search-btn").addEventListener("click", function () {
+      // Get input value
+      let city = document.getElementById("search-input").value;
+
+      // Call getWeather function with input value
+      getWeather(city);
+    });
+  </script>
+</body>
+</html>

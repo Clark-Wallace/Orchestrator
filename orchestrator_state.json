@@ -1,0 +1,105 @@
+{
+  "project_id": "03edf1db-8589-4f88-9c07-677f3ef7ff9e",
+  "context": null,
+  "agents": {
+    "claude_analyst": {
+      "id": "claude_analyst",
+      "name": "Claude Strategic Analyst",
+      "type": "AgentType.ANALYST",
+      "capabilities": [
+        "architecture_design",
+        "requirement_analysis",
+        "strategic_planning",
+        "risk_assessment"
+      ],
+      "status": "ready",
+      "current_task": null,
+      "performance_score": 1.0,
+      "specializations": [
+        "system_design",
+        "scalability",
+        "best_practices"
+      ]
+    },
+    "codex_impl": {
+      "id": "codex_impl",
+      "name": "Codex Implementation Engine",
+      "type": "AgentType.IMPLEMENTER",
+      "capabilities": [
+        "code_generation",
+        "api_development",
+        "database_design",
+        "optimization"
+      ],
+      "status": "ready",
+      "current_task": null,
+      "performance_score": 1.0,
+      "specializations": [
+        "full_stack",
+        "microservices",
+        "cloud_native"
+      ]
+    },
+    "claude2_validator": {
+      "id": "claude2_validator",
+      "name": "Claude2 Quality Validator",
+      "type": "AgentType.VALIDATOR",
+      "capabilities": [
+        "code_review",
+        "test_generation",
+        "security_audit",
+        "performance_testing"
+      ],
+      "status": "ready",
+      "current_task": null,
+      "performance_score": 1.0,
+      "specializations": [
+        "quality_assurance",
+        "security",
+        "compliance"
+      ]
+    },
+    "ide_integrator": {
+      "id": "ide_integrator",
+      "name": "IDE Integration Suite",
+      "type": "AgentType.INTEGRATOR",
+      "capabilities": [
+        "deployment",
+        "monitoring",
+        "debugging",
+        "environment_setup"
+      ],
+      "status": "ready",
+      "current_task": null,
+      "performance_score": 1.0,
+      "specializations": [
+        "ci_cd",
+        "containerization",
+        "observability"
+      ]
+    },
+    "deepseek_reasoner": {
+      "id": "deepseek_reasoner",
+      "name": "DeepSeek Advanced Reasoner",
+      "type": "AgentType.REASONER",
+      "capabilities": [
+        "deep_reasoning",
+        "algorithm_analysis",
+        "performance_optimization",
+        "security_analysis",
+        "architecture_review"
+      ],
+      "status": "ready",
+      "current_task": null,
+      "performance_score": 1.0,
+      "specializations": [
+        "complexity_analysis",
+        "bottleneck_detection",
+        "optimization"
+      ]
+    }
+  },
+  "tasks": {},
+  "signals": [],
+  "execution_log": []
+}
